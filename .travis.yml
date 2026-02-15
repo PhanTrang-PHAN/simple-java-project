@@ -1,0 +1,18 @@
+language: java
+jdk:
+  - openjdk17
+
+# Thêm addon để sử dụng sonarcloud
+addons:
+  sonarcloud:
+    organization: "<SONAR_ORGANIZATION_KEY>" # Thay bằng organization key của bạn
+    token:
+      secure: "$SONAR_TOKEN" # Sử dụng biến môi trường đã tạo trên Travis CI
+
+# Để lấy đầy đủ lịch sử commit cho phân tích, tắt shallow clone
+git:
+  depth: false
+
+script:
+
+  - sonar-scanner
