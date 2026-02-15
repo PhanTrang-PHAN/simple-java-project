@@ -1,0 +1,12 @@
+{
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "gson-2.10.1.jar"
+    ],
+    "java.project.sourcePaths": [
+        "src"
+    ],
+    "java.configuration.runtimes": [],
+    "java.debug.settings.console": "integratedTerminal",
+    "java.debug.settings.forceBuildBeforeLaunch": true
+}

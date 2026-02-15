@@ -1,0 +1,59 @@
+[
+  {
+    "id": "01",
+    "title": "nha gia kim",
+    "author": "davit",
+    "publisher": "kim dong",
+    "isbn": "09",
+    "imagePath": "images/book-cover-default.jpg",
+    "year": 2011,
+    "pages": 90,
+    "quantity": 41,
+    "available": 41,
+    "price": 76000.0,
+    "importDate": "2026-02-13",
+    "categories": [
+      "cafe"
+    ],
+    "reviews": {},
+    "isBorrowed": false
+  },
+  {
+    "id": "02",
+    "title": "cay cam ng?t",
+    "author": "heka",
+    "publisher": "kim loan",
+    "isbn": "ISO_09",
+    "imagePath": "images/book-cover-default.jpg",
+    "year": 2000,
+    "pages": 33,
+    "quantity": 55,
+    "available": 55,
+    "price": 76999.0,
+    "importDate": "2026-02-14",
+    "categories": [
+      "cam l"
+    ],
+    "reviews": {},
+    "isBorrowed": false
+  },
+  {
+    "id": "012",
+    "title": "test",
+    "author": "camdow",
+    "publisher": "kim chi ",
+    "isbn": "ISO_09",
+    "imagePath": "/images/book.png",
+    "year": 2008,
+    "pages": 90,
+    "quantity": 65,
+    "available": 65,
+    "price": 87000.0,
+    "importDate": "2026-02-15",
+    "categories": [
+      ""
+    ],
+    "reviews": {},
+    "isBorrowed": false
+  }
+]
