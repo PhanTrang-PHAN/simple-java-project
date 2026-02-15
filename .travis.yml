@@ -1,3 +1,4 @@
+
 language: java
 
 jdk:
@@ -13,10 +14,10 @@ git:
   depth: false
 
 script:
-  # SonarCloud phân tích mã nguồn trong thư mục src
-  - sonar-scanner
-  
-  # (Tùy chọn) Nếu muốn kiểm tra biên dịch
   - mkdir -p bin
   - javac -cp "src/gson-2.10.1.jar" -d bin src/*.java
   - echo "Biên dịch thành công!"
+  # Kiểm tra xem token đã được truyền chưa
+  - echo "Starting SonarCloud analysis..."
+  - sonar-scanner -Dsonar.login=$SONAR_TOKEN
+    # (Tùy chọn) Nếu muốn kiểm tra biên dịch
