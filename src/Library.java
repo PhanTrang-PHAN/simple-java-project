@@ -111,121 +111,51 @@ public class Library {
     }
     
     static void createCSSFile() {
-        String css = """
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            }
-            
-            body {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                padding: 20px;
-                min-height: 100vh;
-            }
-            
-            .container {
-                max-width: 1200px;
-                margin: 0 auto;
-                background: white;
-                border-radius: 15px;
-                padding: 30px;
-                box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            }
-            
-            h1 {
-                color: #2c3e50;
-                border-bottom: 3px solid #3498db;
-                padding-bottom: 10px;
-                margin-bottom: 30px;
-                font-size: 32px;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
-            
-            .stats {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                gap: 20px;
-                margin-bottom: 30px;
-            }
-            
-            .stat-card {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                color: white;
-                padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            }
-            
-            .stat-card h3 {
-                font-size: 14px;
-                opacity: 0.9;
-                margin-bottom: 10px;
-            }
-            
-            .stat-card .number {
-                font-size: 36px;
-                font-weight: bold;
-            }
-            
-            table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 20px;
-            }
-            
-            th {
-                background: #3498db;
-                color: white;
-                padding: 12px;
-                text-align: left;
-            }
-            
-            td {
-                padding: 12px;
-                border-bottom: 1px solid #ecf0f1;
-            }
-            
-            tr:hover {
-                background: #f7f9fc;
-            }
-            
-            .book-cover {
-                width: 50px;
-                height: 70px;
-                object-fit: cover;
-                border-radius: 5px;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            }
-            
-            .badge {
-                padding: 5px 10px;
-                border-radius: 20px;
-                font-size: 12px;
-                font-weight: bold;
-            }
-            
-            .available {
-                background: #2ecc71;
-                color: white;
-            }
-            
-            .borrowed {
-                background: #e74c3c;
-                color: white;
-            }
-            
-            .chart-container {
-                margin-top: 40px;
-                padding: 20px;
-                background: #f8f9fa;
-                border-radius: 10px;
-            }
-            """;
-            
+        String css = 
+            "* {\n" +
+            "    margin: 0;\n" +
+            "    padding: 0;\n" +
+            "    box-sizing: border-box;\n" +
+            "    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n" +
+            "}\n" +
+            "\n" +
+            "body {\n" +
+            "    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n" +
+            "    padding: 20px;\n" +
+            "    min-height: 100vh;\n" +
+            "}\n" +
+            "\n" +
+            ".container {\n" +
+            "    max-width: 1200px;\n" +
+            "    margin: 0 auto;\n" +
+            "    background: white;\n" +
+            "    border-radius: 15px;\n" +
+            "    padding: 30px;\n" +
+            "    box-shadow: 0 10px 40px rgba(0,0,0,0.1);\n" +
+            "}\n" +
+            "\n" +
+            "h1 {\n" +
+            "    color: #2c3e50;\n" +
+            "    border-bottom: 3px solid #3498db;\n" +
+            "    padding-bottom: 10px;\n" +
+            "    margin-bottom: 30px;\n" +
+            "    font-size: 32px;\n" +
+            "}\n" +
+            "\n" +
+            ".stats {\n" +
+            "    display: grid;\n" +
+            "    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));\n" +
+            "    gap: 20px;\n" +
+            "    margin-bottom: 30px;\n" +
+            "}\n" +
+            "\n" +
+            ".stat-card {\n" +
+            "    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n" +
+            "    padding: 20px;\n" +
+            "    border-radius: 10px;\n" +
+            "    text-align: center;\n" +
+            "}";
+                    
         try {
             Files.write(Paths.get("css/style.css"), css.getBytes());
         } catch (Exception e) {}
