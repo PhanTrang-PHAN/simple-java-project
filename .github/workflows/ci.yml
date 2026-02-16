@@ -26,24 +26,36 @@ jobs:
           mkdir -p out
           mkdir -p test-out
       
+      - name: List files
+        run: |
+          echo "📂 Source files:"
+          ls -la src/
+          echo "📂 Test files:"
+          ls -la test/
+          echo "📂 Lib files:"
+          ls -la lib/
+      
       - name: Compile main code
         run: |
           echo "🔨 Compiling main code..."
-          # File .java nằm trực tiếp trong thư mục src/
-          javac -cp "lib/*:gson-2.10.1.jar" -d out src/*.java
+          javac -cp "lib/*:gson-2.10.1.jar" -d out src/Library.java
           echo "✅ Main code compiled"
+          echo "📂 Compiled classes:"
+          ls -la out/
       
       - name: Compile tests
         run: |
           echo "🔧 Compiling tests..."
-          # File test nằm trực tiếp trong thư mục test/
-          javac -cp "lib/*:gson-2.10.1.jar:out" -d test-out test/*.java
+          # QUAN TRỌNG: Đưa cả thư mục out vào classpath
+          javac -cp "lib/*:gson-2.10.1.jar:out" -d test-out test/LibraryTest.java
           echo "✅ Tests compiled"
+          echo "📂 Test classes:"
+          ls -la test-out/
       
       - name: Run tests
         run: |
           echo "🧪 Running tests..."
-          # Chạy test với classpath đầy đủ
+          # Chạy test với đầy đủ classpath
           java -cp "lib/*:gson-2.10.1.jar:out:test-out" org.junit.runner.JUnitCore LibraryTest
           echo "✅ Tests completed"
       
