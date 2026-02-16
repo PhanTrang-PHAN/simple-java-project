@@ -1,4 +1,4 @@
-name: CI + Coverage - Bài 8
+name: CI Pipeline
 
 on:
   push:
@@ -7,119 +7,41 @@ on:
     branches: [ main, master ]
 
 jobs:
-  build-and-analyze:
-    name: Build, Test và Phân tích Coverage
+  build:
+    name: Build and Test
     runs-on: ubuntu-latest
     
     steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - name: Checkout code
+        uses: actions/checkout@v3
       
-      - name: ☕ Set up JDK 11
-        uses: actions/setup-java@v4
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
         with:
           java-version: '11'
           distribution: 'temurin'
       
-      - name: 📁 Create output directories
+      - name: Create output directories
         run: |
-          mkdir -p bin
-          mkdir -p test-bin
-          mkdir -p coverage-reports
-          echo "✅ Đã tạo thư mục bin, test-bin, coverage-reports"
+          mkdir -p out
+          mkdir -p test-out
       
-      - name: 📋 Show directory structure
+      - name: Compile main code
         run: |
-          echo "=== CẤU TRÚC THƯ MỤC ==="
-          ls -la
-          echo ""
-          echo "=== THƯ MỤC SRC ==="
-          ls -la src/ || echo "Không có src/"
-          echo ""
-          echo "=== THƯ MỤC BIN ==="
-          ls -la bin/ || echo "bin chưa có"
+          echo "🔨 Compiling main code..."
+          javac -cp "lib/*" -d out src/com/example/*.java
+          echo "✅ Main code compiled"
       
-      - name: 🔨 Compile main code
+      - name: Compile tests
         run: |
-          echo "🔨 Biên dịch code chính..."
-          javac -cp "gson-2.10.1.jar" -d bin src/*.java
-          echo "✅ Biên dịch code chính thành công"
-          echo "📂 Các file trong bin:"
-          ls -la bin/
+          echo "🔧 Compiling tests..."
+          # IMPORTANT: Include both lib/* and out in classpath
+          javac -cp "lib/*:out" -d test-out test/com/example/*.java
+          echo "✅ Tests compiled"
       
-      - name: 🔧 Compile tests (nếu có)
+      - name: Run tests
         run: |
-          echo "🔧 Kiểm tra tests..."
-          if [ -d "test" ]; then
-            mkdir -p test-bin
-            javac -cp "gson-2.10.1.jar:bin" -d test-bin test/*.java
-            echo "✅ Biên dịch tests thành công"
-          else
-            echo "⚠️ Không có thư mục test, bỏ qua"
-          fi
-      
-      - name: 🧪 Run tests with JaCoCo (nếu có)
-        run: |
-          if [ -d "test-bin" ] && [ -f "lib/jacocoagent.jar" ]; then
-            echo "🧪 Đang chạy tests và thu thập coverage..."
-            java -javaagent:lib/jacocoagent.jar=destfile=coverage-reports/jacoco.exec \
-                 -cp "gson-2.10.1.jar:bin:test-bin:lib/*" org.junit.runner.JUnitCore LibraryTest
-            echo "✅ Tests hoàn tất"
-          else
-            echo "⚠️ Không chạy tests (thiếu thư mục test-bin hoặc jacocoagent.jar)"
-          fi
-      
-      - name: 📊 Generate JaCoCo coverage report (nếu có)
-        run: |
-          if [ -f "coverage-reports/jacoco.exec" ] && [ -f "lib/jacococli.jar" ]; then
-            echo "📊 Tạo báo cáo coverage..."
-            java -jar lib/jacococli.jar report coverage-reports/jacoco.exec \
-                 --classfiles bin \
-                 --sourcefiles src \
-                 --html coverage-reports/html/ \
-                 --xml coverage-reports/coverage.xml
-            echo "✅ Báo cáo coverage đã tạo"
-          else
-            echo "⚠️ Không tạo báo cáo coverage"
-          fi
-      
-      - name: 📥 Install SonarScanner
-        run: |
-          wget -q https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-          unzip -q sonar-scanner-cli-5.0.1.3006-linux.zip
-          echo "$(pwd)/sonar-scanner-5.0.1.3006-linux/bin" >> $GITHUB_PATH
-          echo "✅ SonarScanner đã cài đặt"
-      
-      - name: 🔍 SonarCloud Scan
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          # Xác định tham số coverage nếu có
-          COVERAGE_PARAM=""
-          if [ -f "coverage-reports/coverage.xml" ]; then
-            COVERAGE_PARAM="-Dsonar.coverage.jacoco.xmlReportPaths=coverage-reports/coverage.xml"
-            echo "📊 Có báo cáo coverage, sẽ gửi lên SonarCloud"
-          else
-            echo "⚠️ Không có báo cáo coverage"
-          fi
-          
-          sonar-scanner \
-            -Dsonar.organization=phantrang-phan \
-            -Dsonar.projectKey=PhanTrang-PHAN_simple-java-project \
-            -Dsonar.sources=src \
-            -Dsonar.java.binaries=bin \
-            -Dsonar.java.libraries=gson-2.10.1.jar \
-            -Dsonar.sourceEncoding=UTF-8 \
-            -Dsonar.host.url=https://sonarcloud.io \
-            $COVERAGE_PARAM
-          echo "✅ Đã gửi báo cáo lên SonarCloud"
-      
-      - name: ⬆️ Upload coverage report artifact (nếu có)
-        if: success() && hashFiles('coverage-reports/html/') != ''
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: coverage-reports/html/
+          echo "🧪 Running tests..."
+          # Run JUnit with full classpath
+          java -cp "lib/*:out:test-out" org.junit.runner.JUnitCore com.example.LibraryTest
+          echo "✅ Tests completed"

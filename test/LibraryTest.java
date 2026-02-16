@@ -1,12 +1,15 @@
+package com.example;
+
 import org.junit.*;
 import static org.junit.Assert.*;
+import java.util.*;
 
 public class LibraryTest {
     
     private Library library;
     private Library.Book book1;
     private Library.Book book2;
-    //test 
+    
     @Before
     public void setUp() {
         library = new Library();
@@ -17,7 +20,27 @@ public class LibraryTest {
     @Test
     public void testAddBook() {
         library.addBook(book1);
-        // Không có cách kiểm tra trực tiếp, nhưng không lỗi là được
+        assertEquals(1, library.getTotalBooks());
+    }
+    
+    @Test
+    public void testRemoveBook() {
+        library.addBook(book1);
+        library.addBook(book2);
+        assertEquals(2, library.getTotalBooks());
+        
+        library.removeBook("978-0132350884");
+        assertEquals(1, library.getTotalBooks());
+    }
+    
+    @Test
+    public void testSearchByAuthor() {
+        library.addBook(book1);
+        library.addBook(book2);
+        
+        List<Library.Book> results = library.searchByAuthor("Robert Martin");
+        assertEquals(1, results.size());
+        assertEquals("Clean Code", results.get(0).getTitle());
     }
     
     @Test
