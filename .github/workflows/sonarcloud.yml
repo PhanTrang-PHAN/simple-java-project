@@ -20,11 +20,17 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      - name: Compile Java
+      - name: Compile Java with Gson
         run: |
           mkdir -p out
-          # Compile tất cả file .java trong src
-          javac -cp "src/gson-2.10.1.jar" -d out src/*.java
+          echo "Current directory structure:"
+          ls -la
+          echo "Gson file exists:"
+          ls -la gson-2.10.1.jar || echo "Gson not found!"
+          echo "Compiling Java files..."
+          javac -cp "gson-2.10.1.jar" -d out src/*.java
+          echo "Compilation complete. Output directory:"
+          ls -la out/
 
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
@@ -49,5 +55,6 @@ jobs:
             -Dsonar.projectKey=PhanTrang-PHAN_simple-java-project \
             -Dsonar.sources=src \
             -Dsonar.java.binaries=out \
+            -Dsonar.java.libraries=gson-2.10.1.jar \
             -Dsonar.sourceEncoding=UTF-8 \
             -Dsonar.host.url=https://sonarcloud.io
