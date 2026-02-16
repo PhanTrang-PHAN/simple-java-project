@@ -29,19 +29,26 @@ jobs:
       - name: Compile main code
         run: |
           echo "🔨 Compiling main code..."
-          javac -cp "lib/*" -d out src/com/example/*.java
+          # File .java nằm trực tiếp trong thư mục src/
+          javac -cp "lib/*:gson-2.10.1.jar" -d out src/*.java
           echo "✅ Main code compiled"
       
       - name: Compile tests
         run: |
           echo "🔧 Compiling tests..."
-          # IMPORTANT: Include both lib/* and out in classpath
-          javac -cp "lib/*:out" -d test-out test/com/example/*.java
+          # File test nằm trực tiếp trong thư mục test/
+          javac -cp "lib/*:gson-2.10.1.jar:out" -d test-out test/*.java
           echo "✅ Tests compiled"
       
       - name: Run tests
         run: |
           echo "🧪 Running tests..."
-          # Run JUnit with full classpath
-          java -cp "lib/*:out:test-out" org.junit.runner.JUnitCore com.example.LibraryTest
+          # Chạy test với classpath đầy đủ
+          java -cp "lib/*:gson-2.10.1.jar:out:test-out" org.junit.runner.JUnitCore LibraryTest
           echo "✅ Tests completed"
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: compiled-classes
+          path: out/
