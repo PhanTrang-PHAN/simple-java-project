@@ -625,7 +625,7 @@ public class Library {
             System.out.println("❌ Lỗi lưu file: " + e.getMessage());
         }
     }
-
+// helo
     static String truncate(String str, int length) {
         if (str.length() <= length) return str;
         return str.substring(0, length - 3) + "...";
